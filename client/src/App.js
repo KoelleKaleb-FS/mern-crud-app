@@ -21,7 +21,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editItem) {
-      fetch(`${API_URL}/items`, {
+      fetch(`${API_URL}/items/${newItem.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItem),
@@ -49,7 +49,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    fetch(`${API_URL}/items`, {
+    fetch(`${API_URL}/items/${id}`, {
       method: 'DELETE',
     })
     .then(() => {
