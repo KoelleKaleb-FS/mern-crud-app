@@ -4,13 +4,15 @@ import './App.css';
 import Header from './components/Header';
 import Home from './components/Home';
 
+const API_URL = 'https://mern-crud-app-cfa78a173530.herokuapp.com';
+
 function App() {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState({ id: '', name: '', value: '' });
   const [editItem, setEditItem] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/items')
+    fetch(`${API_URL}/items`)
       .then(res => res.json())
       .then(data => setItems(data))
       .catch(error => console.error('Error fetching items:', error));
@@ -19,7 +21,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editItem) {
-      fetch(`http://localhost:3001/items/${newItem.id}`, {
+      fetch(`${API_URL}/items`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItem),
@@ -32,7 +34,7 @@ function App() {
       })
       .catch(error => console.error('Error updating item:', error));
     } else {
-      fetch('http://localhost:3001/items', {
+      fetch(`${API_URL}/items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItem),
@@ -47,7 +49,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:3001/items/${id}`, {
+    fetch(`${API_URL}/items`, {
       method: 'DELETE',
     })
     .then(() => {
