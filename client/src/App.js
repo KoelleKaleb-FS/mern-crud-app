@@ -1,5 +1,8 @@
+// src/App.js
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Header from './components/Header';
+import Home from './components/Home';
 
 function App() {
   const [items, setItems] = useState([]);
@@ -60,7 +63,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>MERN CRUD Application</h1>
+      <Header />
+      <Home />
       <form onSubmit={handleSubmit}>
         <input
           type="text"
