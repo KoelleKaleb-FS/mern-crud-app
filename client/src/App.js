@@ -11,6 +11,7 @@ function App() {
   const [newItem, setNewItem] = useState({ id: '', name: '', value: '' });
   const [editItem, setEditItem] = useState(null);
 
+  // Fetch items from the API on component mount
   useEffect(() => {
     fetch(`${API_URL}/items`)
       .then(res => res.json())
@@ -20,32 +21,25 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editItem) {
-      fetch(`${API_URL}/items/${newItem.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newItem),
-      })
-      .then(res => res.json())
-      .then(data => {
-        setItems(items.map(item => item.id === data.id ? data : item));
-        setNewItem({ id: '', name: '', value: '' });
-        setEditItem(null);
-      })
-      .catch(error => console.error('Error updating item:', error));
-    } else {
-      fetch(`${API_URL}/items`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newItem),
-      })
-      .then(res => res.json())
-      .then(data => {
+    const method = editItem ? 'PUT' : 'POST';
+    const url = editItem ? `${API_URL}/items/${newItem.id}` : `${API_URL}/items`;
+
+    fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newItem),
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (editItem) {
+        setItems(items.map(item => (item.id === data.id ? data : item)));
+      } else {
         setItems([...items, data]);
-        setNewItem({ id: '', name: '', value: '' });
-      })
-      .catch(error => console.error('Error adding item:', error));
-    }
+      }
+      setNewItem({ id: '', name: '', value: '' });
+      setEditItem(null);
+    })
+    .catch(error => console.error(`Error ${editItem ? 'updating' : 'adding'} item:`, error));
   };
 
   const handleDelete = (id) => {
@@ -66,7 +60,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Home />
+      <Home items={items} handleEdit={handleEdit} handleDelete={handleDelete} />
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -88,15 +82,6 @@ function App() {
         />
         <button type="submit">{editItem ? 'Update Item' : 'Add Item'}</button>
       </form>
-      <ul>
-        {items.map(item => (
-          <li key={item.id}>
-            {item.name} - {item.value}
-            <button onClick={() => handleEdit(item)}>Edit</button>
-            <button onClick={() => handleDelete(item.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
