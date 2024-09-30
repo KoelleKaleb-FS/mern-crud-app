@@ -11,10 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // CORS configuration
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,
-};
+app.use(cors({
+  origin: 'https://mern-crud-ezw5vveiv-kaleb-koelles-projects.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true 
+}));
 
 // Middleware
 app.use(cors(corsOptions)); // Use CORS middleware with options
