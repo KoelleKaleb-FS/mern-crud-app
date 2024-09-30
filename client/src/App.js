@@ -1,8 +1,11 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Import Link here
 import './App.css';
 import Header from './components/Header';
 import Home from './components/Home';
+import Login from './components/login'; // Import the Login component
+import Register from './components/register'; // Import the Register component
 
 const API_URL = 'https://mern-crud-app-cfa78a173530.herokuapp.com';
 
@@ -58,31 +61,44 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header />
-      <Home items={items} handleEdit={handleEdit} handleDelete={handleDelete} />
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="ID"
-          value={newItem.id}
-          onChange={(e) => setNewItem({ ...newItem, id: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Name"
-          value={newItem.name}
-          onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Value"
-          value={newItem.value}
-          onChange={(e) => setNewItem({ ...newItem, value: e.target.value })}
-        />
-        <button type="submit">{editItem ? 'Update Item' : 'Add Item'}</button>
-      </form>
-    </div>
+    <Router> {/* Wrap your app with Router */}
+      <div className="App">
+        <Header />
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/login">Login</Link>
+          <Link to="/register">Register</Link>
+        </nav>
+        
+        <Routes> {/* Define your routes */}
+          <Route path="/" element={<Home items={items} handleEdit={handleEdit} handleDelete={handleDelete} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="ID"
+            value={newItem.id}
+            onChange={(e) => setNewItem({ ...newItem, id: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Name"
+            value={newItem.name}
+            onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Value"
+            value={newItem.value}
+            onChange={(e) => setNewItem({ ...newItem, value: e.target.value })}
+          />
+          <button type="submit">{editItem ? 'Update Item' : 'Add Item'}</button>
+        </form>
+      </div>
+    </Router>
   );
 }
 
