@@ -1,7 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 
-const API_URL = 'https://mern-crud-app-cfa78a173530.herokuapp.com/';
+const API_URL = 'https://mern-crud-app-cfa78a173530.herokuapp.com/login';
 
 const Login = () => {
   const [email, setEmail] = useState('');

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = 'https://mern-crud-app-cfa78a173530.herokuapp.com/';
+const API_URL = 'https://mern-crud-app-cfa78a173530.herokuapp.com/register';
 
 const Register = () => {
   const [username, setUsername] = useState('');
